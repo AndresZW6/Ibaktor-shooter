@@ -114,6 +114,9 @@ public class EnemyControl : MonoBehaviour
                 animEnemigo.SetBool("SeEstaMoviendo", true);
             } else {
 
+            if(PlayerControl.instancia.gameObject.activeInHierarchy)
+            {
+
             tiempoDisparoContador -= Time.deltaTime;
 
                 if (tiempoDisparoContador > 0)
@@ -149,6 +152,7 @@ public class EnemyControl : MonoBehaviour
                 } else {
                     tiempoDisparoContador = EsperaDisparo;
                 }
+            }
                 
                 animEnemigo.SetBool("SeEstaMoviendo", false);
         }           

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -39,6 +40,11 @@ public class PlayerControl : MonoBehaviour
     public GameObject proyectil;
     public Transform puntoFuego;
 
+    public Pistola pistolaActiva;
+
+    public List<Pistola> TodasLasPistolas = new List<Pistola>();
+    public int PistolaActual;
+
     //Modificador de gravedad
 
     public float gravedadM;
@@ -53,10 +59,19 @@ public class PlayerControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Sesión de interaccion con triggers
         cubo.SetActive(true);
         esfera.SetActive(false);
         cilindro.SetActive(false);
         pressF.SetActive(false);
+
+        //Municion inicial
+        //UIControl.instanciaUI.TextoMunicion.text = "MUNICION: " + pistolaActiva.MunicionActual;
+
+        //pistolaActiva = TodasLasPistolas[PistolaActual];
+        //pistolaActiva.gameObject.SetActive(true);
+        PistolaActual --;
+        CambioArma();
     }
 
     // Update is called once per frame
@@ -139,8 +154,8 @@ public class PlayerControl : MonoBehaviour
         CamMov.rotation = Quaternion.Euler(CamMov.rotation.eulerAngles + new Vector3(mouseInput.y, 0f, 0f));
 
         //Control de disparo
-
-        if(Input.GetMouseButtonDown(0))
+        //Un unico disparo
+        if(Input.GetMouseButtonDown(0) && pistolaActiva.contadorCadencia <= 0)
         {
             RaycastHit hit;
             if(Physics.Raycast(CamMov.position, CamMov.forward, out hit, 50f))
@@ -156,7 +171,42 @@ public class PlayerControl : MonoBehaviour
                 puntoFuego.LookAt(CamMov.position + (CamMov.forward * 30f));
             }
 
-            Instantiate(proyectil, puntoFuego.position, puntoFuego.rotation);
+            //Ejecucion de disparos antes de agregar sistema de armas
+            //Instantiate(proyectil, puntoFuego.position, puntoFuego.rotation);
+
+            //Ejectuamos la funcion de disparos
+            Disparos();
+        }
+
+        //Disparos repetitivos
+        if(Input.GetMouseButton(0) && pistolaActiva.PuedeDispararAutomatico)
+        {
+            if(pistolaActiva.contadorCadencia <= 0)
+            {
+                Disparos();
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            CambioArma();
+        }
+    }
+
+    //Funcion que ejecuta disparos con la pistola activa
+    public void Disparos()
+    {
+        if(pistolaActiva.MunicionActual > 0 )
+        {
+
+            pistolaActiva.MunicionActual --;
+            //Creamos el disparo a partir del objeto que tiene asignado el script de pistola
+            Instantiate(pistolaActiva.Bala, puntoFuego.position, puntoFuego.rotation);
+
+            pistolaActiva.contadorCadencia = pistolaActiva.CadenciaTiro;
+
+            UIControl.instanciaUI.TextoMunicion.text = "MUNICION: " + pistolaActiva.MunicionActual;
+
         }
     }
 
@@ -228,5 +278,24 @@ public class PlayerControl : MonoBehaviour
                 SceneManager.LoadScene("Game_02");
             }
         }
+    }
+
+    public void CambioArma()
+    {
+        pistolaActiva.gameObject.SetActive(false);
+
+        PistolaActual++; 
+        
+        if(PistolaActual >= TodasLasPistolas.Count)
+        {
+            PistolaActual = 0;
+        }
+
+        pistolaActiva = TodasLasPistolas[PistolaActual];
+        pistolaActiva. gameObject.SetActive(true);
+
+        UIControl.instanciaUI.TextoMunicion.text = "MUNICION: " + pistolaActiva.MunicionActual;
+
+        puntoFuego.position = pistolaActiva.puntofuego.position;
     }
 }

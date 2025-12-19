@@ -53,15 +53,16 @@ public class BulletControl : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-         if(other.gameObject.tag == "Enemigos" && danoEnemigo)
+        if(other.gameObject.tag == "Enemigos" && danoEnemigo)
         {
             //Destroy(other.gameObject);
-            other.gameObject.GetComponent<VidaEnemigoControlador>().DanoEnemigo(danoPistola);
+            other.gameObject.GetComponent<VidaEnemigoControlador>().DanoEnemigo(danoPistola * 2);
         }
 
         if (other.gameObject.tag == "Player" && danoJugador)
         {
-            Debug.Log("Golpeo al jugador en " + transform.position);
+            //Debug.Log("Golpeo al jugador en " + transform.position);
+            VidaJugadorControlador.instanciaVidaJugador.DanoJugador(danoPistola);
         }
 
         //Condicion para eliminar proyectil cuando impacte con otro objeto

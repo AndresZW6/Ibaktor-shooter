@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1712992540629484867}
   - component: {fileID: 3084066306802662153}
   m_Layer: 7
-  m_Name: ProyectilEnemigo
+  m_Name: Proyectil 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,13 +150,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb7a47b1101be54ca2e91244cf514cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vbullet: 20
-  TiempoDesaparicion: 5
+  Vbullet: 30
+  TiempoDesaparicion: 6
   RBB: {fileID: 5242136763871281674}
   EfectoImpacto: {fileID: 8357738598328353432, guid: 0b59ff731665f3b4386532747e66abcc, type: 3}
-  danoPistola: 10
-  danoEnemigo: 0
-  danoJugador: 1
+  danoPistola: 5
+  danoEnemigo: 1
+  danoJugador: 0
 --- !u!96 &3084066306802662153
 TrailRenderer:
   serializedVersion: 3
